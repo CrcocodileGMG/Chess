@@ -50,7 +50,7 @@ class Checker(Figure):
         else:
             if abs(x2 - x1) == 2 and y1 - y2 == 2:
                 return True
-        return False1
+        return False
 
 
 class King(Figure):
@@ -322,7 +322,7 @@ class Desk:
         for line in self.desk:
             for cell in line:
                 if cell is not None:
-                    if cell.get_color:
+                    if cell.get_color():
                         return True
                     else:
                         return False

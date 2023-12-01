@@ -10,9 +10,9 @@ FPS = 60
 
 
 class Figure:
-    def __init__(self, x, y, side):
+    def __init__(self, x, y):
         self.x, self.y = x, y
-        self.side = side
+        self.side = desk.get_cell_side()
 
     def update(self):
         pygame.draw.rect(screen, RED_COLOR, desk.get_cell_coordinate(self.x, self.y))
@@ -48,6 +48,9 @@ class Desk:
                                  (WHITE_COLOR if (x + y) % 2 == 0 else GRAY_COLOR)))
             self.desk.append(line)
 
+    def get_cell_side(self):
+        return self.side / 8
+
     def update(self):
         for line in self.desk:
             for cell in line:
@@ -64,7 +67,7 @@ class Desk:
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(SIZE)
 desk = Desk(0, 0, 400)
-red_square = Figure(1, 1, 50)
+red_square = Figure(1, 1)
 
 game = True
 while game:
@@ -73,8 +76,8 @@ while game:
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
-                x, y = desk.cell_coordinate(event.pos[0], event.pos[1])
-                red_square.set_crds(x, y)
+                Ox, Oy = desk.cell_coordinate(event.pos[0], event.pos[1])
+                red_square.set_crds(Ox, Oy)
         if event.type == pygame.QUIT:
             game = False
     pygame.display.flip()
