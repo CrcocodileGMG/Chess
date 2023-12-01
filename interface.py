@@ -4,7 +4,7 @@ from math import ceil
 
 WHITE_COLOR = pygame.Color(255, 255, 255, 255)
 GRAY_COLOR = pygame.Color(128, 128, 128, 255)
-SIZE = WIDTH, HEIGHT = 600, 600
+SIZE = WIDTH, HEIGHT = 400, 400
 FPS = 60
 
 
@@ -43,7 +43,7 @@ class Desk:
 
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(SIZE)
-desk = Desk(200, 200, 400)
+desk = Desk(0, 0, 400)
 desk.update()
 pygame.display.flip()
 
