@@ -4,8 +4,18 @@ from math import ceil
 
 WHITE_COLOR = pygame.Color(255, 255, 255, 255)
 GRAY_COLOR = pygame.Color(128, 128, 128, 255)
+RED_COLOR = pygame.Color("red")
 SIZE = WIDTH, HEIGHT = 400, 400
 FPS = 60
+
+
+class Figure:
+    def __init__(self, x, y, side):
+        self.x, self.y = x, y
+        self.side = side
+
+    def update(self):
+        pygame.draw.rect(screen, RED_COLOR, desk.get_cell_coordinate(self.x, self.y))
 
 
 class Cell:
@@ -13,6 +23,9 @@ class Cell:
         self.indent_x, self.indent_y = indent_x, indent_y
         self.side = side
         self.color = color
+
+    def get_inf(self):
+        return self.indent_x, self.indent_y, self.side, self.side
 
     def update(self):
         pygame.draw.rect(screen, self.color, (self.indent_x, self.indent_y, self.side, self.side))
@@ -36,6 +49,9 @@ class Desk:
             for cell in line:
                 cell.update()
 
+    def get_cell_coordinate(self, x, y):
+        return self.desk[y - 1][x - 1].get_inf()
+
     def cell_coordinate(self, x_pixels, y_pixels):
         return (ceil((x_pixels - self.indent_x) / (self.side / 8)),
                 ceil((self.side - (y_pixels - self.indent_y)) / (self.side / 8)))
@@ -46,6 +62,8 @@ screen = pygame.display.set_mode(SIZE)
 desk = Desk(0, 0, 400)
 desk.update()
 pygame.display.flip()
+red_square = Figure(1, 1, 50)
+red_square.update()
 
 game = True
 while game:
