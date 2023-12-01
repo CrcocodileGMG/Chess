@@ -4,7 +4,7 @@ from math import ceil
 
 WHITE_COLOR = pygame.Color(255, 255, 255, 255)
 GRAY_COLOR = pygame.Color(128, 128, 128, 255)
-RED_COLOR = pygame.Color("red")
+RED_COLOR = pygame.Color(255, 0, 0, 255)
 SIZE = WIDTH, HEIGHT = 400, 400
 FPS = 60
 
@@ -16,6 +16,10 @@ class Figure:
 
     def update(self):
         pygame.draw.rect(screen, RED_COLOR, desk.get_cell_coordinate(self.x, self.y))
+
+    def set_crds(self, x, y):
+        self.x = x
+        self.y = y
 
 
 class Cell:
@@ -60,17 +64,17 @@ class Desk:
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(SIZE)
 desk = Desk(0, 0, 400)
-desk.update()
-pygame.display.flip()
 red_square = Figure(1, 1, 50)
-red_square.update()
 
 game = True
 while game:
+    desk.update()
+    red_square.update()
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
-                print(desk.cell_coordinate(event.pos[0], event.pos[1]))
+                x, y = desk.cell_coordinate(event.pos[0], event.pos[1])
+                red_square.set_crds(x, y)
         if event.type == pygame.QUIT:
             game = False
     pygame.display.flip()
