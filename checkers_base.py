@@ -2,7 +2,7 @@ from functions import cell_to_coordinates, coordinates_to_cell
 from constants import *
 
 
-class Figure:
+class CheckersFigure:
     """
         Args:
             color (bool): input format: True(white), False(black)
@@ -27,8 +27,11 @@ class Figure:
             return self.char_black
         return self.char_white
 
+    def __repr__(self):
+        return self.__str__()
 
-class Checker(Figure):
+
+class Checker(CheckersFigure):
     def __init__(self, color):
         super().__init__(color)
         self.char_white = "⛀"
@@ -53,7 +56,7 @@ class Checker(Figure):
         return False
 
 
-class King(Figure):
+class CheckersKing(CheckersFigure):
     def __init__(self, color):
         super().__init__(color)
         self.char_white = "⛁"
@@ -61,7 +64,7 @@ class King(Figure):
 
     @staticmethod
     def check_move(x1, y1, x2, y2):
-        if abs(x1 - x2) == abs(y1 - y2):
+        if abs(x1 - x2) == abs(y1 - y2) and x1 != x2 and y1 != y2:
             return True
         return False
 
@@ -72,7 +75,7 @@ class King(Figure):
         return False
 
 
-class Desk:
+class CheckersDesk:
     def __init__(self):
         self.desk = [[None for _ in range(8)] for _ in range(8)]
         self.__move_color = WHITE
@@ -119,10 +122,10 @@ class Desk:
 
     def move(self, x1, y1, x2, y2):
         if isinstance(self.get_cell(x1, y1), Checker) and self.get_cell(x1, y1).get_color() and y1 == 7:
-            self.desk[y2 - 1][x2 - 1] = King(WHITE)
+            self.desk[y2 - 1][x2 - 1] = CheckersKing(WHITE)
             self.desk[y1 - 1][x1 - 1] = None
         elif isinstance(self.get_cell(x1, y1), Checker) and not self.get_cell(x1, y1).get_color() and y1 == 2:
-            self.desk[y2 - 1][x2 - 1] = King(BLACK)
+            self.desk[y2 - 1][x2 - 1] = CheckersKing(BLACK)
             self.desk[y1 - 1][x1 - 1] = None
         else:
             self.desk[y2 - 1][x2 - 1] = self.desk[y1 - 1][x1 - 1]
@@ -151,28 +154,33 @@ class Desk:
                     break
 
     def check_move(self, x1, y1, x2, y2):
-        if abs(y2 - y1) == abs(x2 - x1):
+        figure = self.get_cell(x1, y1)
+        if figure.check_move(x1, y1, x2, y2):
             if x1 < x2 and y1 < y2:
                 for i in range(1, x2 - x1 + 1):
                     if self.get_cell(x1 + i, y1 + i) is not None:
                         return False
+                return True
             elif x1 < x2 and y2 < y1:
                 for i in range(1, x2 - x1 + 1):
                     if self.get_cell(x1 + i, y1 - i) is not None:
                         return False
+                return True
             elif x2 < x1 and y2 < y1:
                 for i in range(1, abs(x2 - x1) + 1):
                     if self.get_cell(x1 - i, y1 - i) is not None:
                         return False
+                return True
             elif x2 < x1 and y1 < y2:
                 for i in range(1, abs(x2 - x1) + 1):
                     if self.get_cell(x1 - i, y1 + i) is not None:
                         return False
-        return True
+                return True
+        return False
 
     def check_attack(self, x1, y1, x2, y2):
         figure_count_line = 0
-        if abs(y2 - y1) == abs(x2 - x1):
+        if abs(y2 - y1) == abs(x2 - x1) and x1 != x2 and y1 != y2:
             if x1 < x2 and y1 < y2:
                 for i in range(1, x2 - x1):
                     if self.get_cell(x1 + i, y1 + i) is not None:

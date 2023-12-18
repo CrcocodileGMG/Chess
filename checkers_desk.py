@@ -1,13 +1,13 @@
-from checkers_base import Figure, Checker, King, Desk
+from checkers_base import CheckersFigure, Checker, CheckersKing, CheckersDesk
 from functions import cell_to_coordinates, coordinates_to_cell
 from constants import *
 
 
-checkers_desk = Desk()
+checkers_desk = CheckersDesk()
 white_figures_dict = {"checker": Checker(WHITE),
-                      "king": King(WHITE)}
+                      "king": CheckersKing(WHITE)}
 black_figures_dict = {"checker": Checker(BLACK),
-                      "king": King(BLACK)}
+                      "king": CheckersKing(BLACK)}
 
 
 def chessboard_arrangement():
